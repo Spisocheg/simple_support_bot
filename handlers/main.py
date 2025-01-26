@@ -36,7 +36,10 @@ def via_copy_message(message: types.Message, bot: TeleBot):
         msg_id = msg.reply_to_message.text.split('\n')[1].replace(msg_id_pattern, '').replace(']', '')
         
         # Отправка reply на сообщение Пользователя с ответом Админа
-        bot.send_message(user_id, msg.text, reply_to_message_id=msg_id)
+        try:
+            bot.send_message(user_id, msg.text, reply_to_message_id=msg_id)
+        except Exception:
+            bot.send_message(user_id, msg.text)
         
         # Уведомление Админа об отправке ответа Пользователю
         bot.send_message(msg.from_user.id, TEXT['message_sent_to_user'])
@@ -81,7 +84,7 @@ def via_forward_message(message: types.Message, bot: TeleBot):
         if not msg.reply_to_message:
             bot.send_message(msg.from_user.id, TEXT['sender_error'])
             return None
-                
+
         # Получение Пользователя (кому ответить)
         if msg.reply_to_message.forward_origin.type == 'hidden_user':
             user_id = USERNAMES_IDS[msg.reply_to_message.forward_origin.sender_user_name]
