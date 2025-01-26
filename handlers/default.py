@@ -1,6 +1,6 @@
 from telebot import TeleBot, types
 
-from config import ADMIN_ID, TEXT
+from config import TEXT
 
 
 def start_command(message: types.Message, bot: TeleBot):
