@@ -1,4 +1,4 @@
-from config import bot
+from config import bot, ALL_TEXT_MESSAGES_WAY
 from handlers import default, main
 
 
@@ -17,11 +17,7 @@ bot.register_message_handler(default.non_text_message, content_types=['audio', '
                                                                       'chat_shared', 'story'], pass_bot=True)
 
 # Функция, обрабатывающая любой текст, посылаемый боту (для Админов поведение изменено), в том числе и reply
-#   [закомментировать ненужное]
-#   Функция 1
-bot.register_message_handler(main.via_copy_message, content_types=['text'], pass_bot=True)
-#   Функция 2 (не рекомендуется)
-# bot.register_message_handler(main.via_forward_message, content_types=['text'], pass_bot=True)
+bot.register_message_handler(main.via_copy_message if ALL_TEXT_MESSAGES_WAY == 'copy' else main.via_forward_message, content_types=['text'], pass_bot=True)
 
 
 if __name__ == '__main__':
