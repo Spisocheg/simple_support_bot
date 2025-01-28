@@ -13,3 +13,7 @@ def help_info_command(message: types.Message, bot: TeleBot):
 
 def non_text_message(message: types.Message, bot: TeleBot):
     bot.send_message(message.from_user.id, TEXT['non_text_message_error'])
+    
+
+def unknown_command(message: types.Message, bot: TeleBot):
+    bot.send_message(message.from_user.id, TEXT['unknown_command_error'])

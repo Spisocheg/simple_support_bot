@@ -2,9 +2,10 @@ from config import bot, ALL_TEXT_MESSAGES_WAY
 from handlers import default, main
 
 
-# Стандартные команды (/start, /help, /info и все нетекстовые сообщения)
+# Стандартные команды (/start, /help, /info, все нетекстовые сообщения и неизвестные команды)
 bot.register_message_handler(default.start_command, commands=['start'], pass_bot=True)
 bot.register_message_handler(default.help_info_command, commands=['help', 'info'], pass_bot=True)
+bot.register_message_handler(default.unknown_command, content_types=['text'], func=lambda msg: '/' in msg.text, pass_bot=True)
 bot.register_message_handler(default.non_text_message, content_types=['audio', 'document', 'animation', 'game', 'photo', 'sticker', 'video', 
                                                                       'video_note', 'voice', 'location', 'contact', 'venue', 'dice', 'new_chat_members', 
                                                                       'left_chat_member', 'new_chat_title', 'new_chat_photo', 'delete_chat_photo', 'group_chat_created', 
@@ -17,7 +18,8 @@ bot.register_message_handler(default.non_text_message, content_types=['audio', '
                                                                       'chat_shared', 'story'], pass_bot=True)
 
 # Функция, обрабатывающая любой текст, посылаемый боту (для Админов поведение изменено), в том числе и reply
-bot.register_message_handler(main.via_copy_message if ALL_TEXT_MESSAGES_WAY == 'copy' else main.via_forward_message, content_types=['text'], pass_bot=True)
+bot.register_message_handler(main.via_copy_message if ALL_TEXT_MESSAGES_WAY == 'copy' else main.via_forward_message, content_types=['text'], 
+                             func=lambda msg: '/' not in msg.text, pass_bot=True)
 
 
 if __name__ == '__main__':
